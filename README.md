@@ -24,6 +24,12 @@ Dans le fichier [date.py](date.py) l'héritage pour créer une classe DateGenera
 
 La classe DateProcessor fournit une méthode process_date qui convertit une chaîne de caractères représentant une date en un objet datetime et extrait diverses informations comme le mois, le numéro du mois, l'année et le jour. Elle retourne un dictionnaire contenant ces informations.
 
+## 5 - Interface
+
+En Python, le concept d'interface est basé sur le principe du "duck typing", ce qui signifie que les objets sont évalués en fonction de leur comportement plutôt que de leur type explicite. Contrairement à certains langages de programmation qui ont des interfaces explicites, Python ne fournit pas de syntaxe spécifique pour déclarer formellement une interface.
+
+Dans Python, une interface est souvent considérée comme un ensemble de méthodes que les objets doivent implémenter pour être considérés comme "compatibles" avec cette interface. Plutôt que de spécifier explicitement une interface, vous pouvez simplement définir les méthodes que vous attendez d'un objet et utiliser ces méthodes dans votre code. Si un objet implémente ces méthodes, il est considéré comme compatible avec l'interface.
+
 ## 6 - Méthodes et attributs d'objets
 
 Dans [word.py](word.py) la classes WordGenerator défini des méthodes et des attributs. 
@@ -60,4 +66,3 @@ process_date(date_str): Cette méthode prend une chaîne de caractères représe
 
 self._dates: Cet attribut est une liste qui stocke les dates à traiter. Il est initialisé dans le constructeur de la classe DateGenerator et peut être obtenu à l'aide de la méthode get_dates() et modifié à l'aide de la méthode set_dates(x).
 self._listDate: Cet attribut est une liste qui stocke les dates traitées. Il est initialisé dans le constructeur de la classe DateGenerator et peut être obtenu à l'aide de la méthode get_listDate() et modifié à l'aide de la méthode set_listDate(x).
-
