@@ -1,0 +1,94 @@
+<html>
+<head>
+    <title>Générateur de mot de passe</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+	<form id="add-words-form">
+		<label for="words">Ajouter des mots à la liste :</label>
+		<input type="text" id="words" name="words" placeholder="Entrez un mot">
+		<button id="add-word-button" type="submit">Ajouter le mot</button>
+        <label for="date">Ajouter une date :</label>
+        <input type="date" id="date" name="date"></br>
+        <button id="add-date-button" type="submit">Ajouter la date</button></br>
+        <label for="num-passwords">Nombre de mots de passe à générer :</label>
+		<input type="number" id="num-passwords" name="num-passwords" value="3" min="1"></br>
+		<button id="generate-button" type="submit">Générer des mots de passe à partir de la liste</button>
+		<br>
+	</form>
+
+    <h2>Liste de mots :</h2>
+	<div id="words-list"></div>
+
+    <h2>Liste de dates :</h2>
+	<div id="date-list"></div>
+
+    <h2>Mots de passe générés :</h2>
+    <div id="password-list"></div>
+
+	<script>
+		const addWord = document.getElementById('add-word-button');
+        const form = document.getElementById('add-words-form');
+        const generateWord = document.getElementById('generate-button');
+		const wordsInput = document.getElementById('words');
+		const wordsList = document.getElementById('words-list');
+        const passwordList = document.getElementById('password-list');
+        const addDateButton = document.getElementById('add-date-button');
+        const dateInput = document.getElementById('date');
+        const dateList = document.getElementById('date-list');
+
+		addWord.addEventListener('click', (event) => {
+			event.preventDefault();
+			const words = wordsInput.value.split(',').map((word) => word.trim());
+			words.forEach((word) => {
+				const span = document.createElement('span');
+				span.textContent = word + ', ';
+				wordsList.appendChild(span);
+			});
+			form.reset();
+		});
+
+        addDateButton.addEventListener('click', (event) => {
+            event.preventDefault();
+
+            const dateValue = dateInput.value;
+            
+            if (dateValue) {
+                const span = document.createElement('span');
+                span.textContent = dateValue + ', ';
+                dateList.appendChild(span);
+                
+                dateInput.value = '';
+            }
+        });
+
+        generateWord.addEventListener('click', async (event) => {
+            event.preventDefault();
+
+            // Récupérer la liste de mots
+            const spans = Array.from(wordsList.getElementsByTagName('span'));
+            const words = spans.map(span => span.textContent.replace(', ', '').trim());
+
+            // Récupérer la liste de dates
+            const dateSpans = Array.from(dateList.getElementsByTagName('span'));
+            const dates = dateSpans.map(span => span.textContent.replace(', ', '').trim());
+
+            const numPasswords = document.getElementById('num-passwords').value;  // Récupérer le nombre de mots de passe
+
+            const response = await fetch('/generate_password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ words, dates, nb_mots_de_passe: numPasswords })  // Inclure la liste de mots, la liste de dates et le nombre de mots de passe dans la requête
+            });
+            const passwords = await response.json();
+            console.log(passwords);
+
+            passwordList.textContent = passwords.join(', ');  // Afficher les mots de passe séparés par une virgule
+        });
+
+	</script>
+</body>
+</html>
